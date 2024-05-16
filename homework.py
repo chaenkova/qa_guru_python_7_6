@@ -8,7 +8,10 @@ def test_dark_theme_by_time():
     current_time = time(hour=23)
     # TODO переключите темную тему в зависимости от времени суток (с 22 до 6 часов утра - ночь)
 
-    is_dark_theme = None
+    is_dark_theme = True if 22 < current_time.hour or current_time.hour < 6 else False
+
+    #is_dark_theme = 22 < current_time.hour or current_time.hour < 6 - это короче и рациональнее. но сверху условия
+
     assert is_dark_theme is True
 
 
@@ -25,7 +28,9 @@ def test_dark_theme_by_time_and_user_choice():
     # TODO переключите темную тему в зависимости от времени суток,
     #  но учтите что темная тема может быть включена вручную
 
-    is_dark_theme = None
+    is_dark_theme = (
+            22 < current_time.hour or current_time.hour < 6) if dark_theme_enabled_by_user is None else dark_theme_enabled_by_user
+
     assert is_dark_theme is True
 
 
@@ -42,11 +47,19 @@ def test_find_suitable_user():
     ]
 
     # TODO найдите пользователя с именем "Olga"
-    suitable_users = None
+    for user in users:
+        suitable_users = user
+        if suitable_users['name'] == 'Olga':
+            break
+
     assert suitable_users == {"name": "Olga", "age": 45}
 
     # TODO найдите всех пользователей младше 20 лет
-    suitable_users = None
+    suitable_users = []
+    for user in users:
+        if user['age'] < 20:
+            suitable_users.append(user)
+
     assert suitable_users == [
         {"name": "Stanislav", "age": 15},
         {"name": "Maria", "age": 18},
@@ -71,15 +84,21 @@ def test_readable_function():
 
 
 def open_browser(browser_name):
-    actual_result = None
+    actual_result = readeble_name(open_browser, browser_name)
     assert actual_result == "Open Browser [Chrome]"
 
 
 def go_to_companyname_homepage(page_url):
-    actual_result = None
+    actual_result = readeble_name(go_to_companyname_homepage, page_url)
     assert actual_result == "Go To Companyname Homepage [https://companyname.com]"
 
 
 def find_registration_button_on_login_page(page_url, button_text):
-    actual_result = None
+    actual_result = readeble_name(find_registration_button_on_login_page, page_url, button_text)
     assert actual_result == "Find Registration Button On Login Page [https://companyname.com/login, Register]"
+
+
+def readeble_name(func, *args):
+    name = func.__name__
+    argums = ", ".join([*args])
+    return f"{name.replace('_', ' ').title()} [{argums}]"
