@@ -8,9 +8,9 @@ def test_dark_theme_by_time():
     current_time = time(hour=23)
     # TODO переключите темную тему в зависимости от времени суток (с 22 до 6 часов утра - ночь)
 
-    is_dark_theme = True if 22 < current_time.hour or current_time.hour < 6 else False
+    is_dark_theme = True if 22 <= current_time.hour or current_time.hour < 6 else False
 
-    #is_dark_theme = 22 < current_time.hour or current_time.hour < 6 - это короче и рациональнее. но сверху условия
+    #is_dark_theme = 22 <= current_time.hour or current_time.hour < 6 - это короче и рациональнее. но сверху условия
 
     assert is_dark_theme is True
 
@@ -29,7 +29,7 @@ def test_dark_theme_by_time_and_user_choice():
     #  но учтите что темная тема может быть включена вручную
 
     is_dark_theme = (
-            22 < current_time.hour or current_time.hour < 6) if dark_theme_enabled_by_user is None else dark_theme_enabled_by_user
+            22 <= current_time.hour or current_time.hour < 6) if dark_theme_enabled_by_user is None else dark_theme_enabled_by_user
 
     assert is_dark_theme is True
 
@@ -45,7 +45,7 @@ def test_find_suitable_user():
         {"name": "Olga", "age": 45},
         {"name": "Maria", "age": 18},
     ]
-
+    suitable_users = []
     # TODO найдите пользователя с именем "Olga"
     for user in users:
         suitable_users = user
@@ -53,9 +53,9 @@ def test_find_suitable_user():
             break
 
     assert suitable_users == {"name": "Olga", "age": 45}
-
-    # TODO найдите всех пользователей младше 20 лет
     suitable_users = []
+    # TODO найдите всех пользователей младше 20 лет
+
     for user in users:
         if user['age'] < 20:
             suitable_users.append(user)
@@ -101,4 +101,5 @@ def find_registration_button_on_login_page(page_url, button_text):
 def readeble_name(func, *args):
     name = func.__name__
     argums = ", ".join([*args])
+    print(f"{name.replace('_', ' ').title()} [{argums}]")
     return f"{name.replace('_', ' ').title()} [{argums}]"
